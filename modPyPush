@@ -1,0 +1,23 @@
+#!/bin/bash
+#  ~/pypush/demo.py
+#  ~/pypush/sms_registration.py
+
+
+# https://unix.stackexchange.com/a/706066
+# https://unix.stackexchange.com/a/223504
+
+
+if [[ $(grep -L "#!/usr/bin/env python" ~/pypush/demo.py) ]]; then   #l : --files-without-match
+        sed -i '1i\#!/usr/bin/env python
+        ' ~/pypush/demo.py
+fi
+
+
+#uncomment if in the UK                                                                                    
+#sed -i 's/22223333/+447786205094/g' ~/pypush/sms_registration.py                                          
+#https://stackoverflow.com/questions/48839880/sed-replace-value-with-variable
+ip=$(ifconfig |  grep inet | grep broadcast | grep -oP 'inet\K \S+' | tr -d ' ')
+
+
+sed "s/PHONE_IP.*/PHONE_IP = \"$ip\"/" ~/pypush/sms_registration.py
+
